@@ -6,8 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainApp {
+    private String username;
+    private boolean isAdmin;
+    private boolean darkmode = false;
 
-    public MainApp() {
+    public MainApp(String username, boolean isAdmin) {
+        this.username = username;
+        this.isAdmin = isAdmin;
+
         JFrame landingFrame = new JFrame("TrainingsApp");
         landingFrame.setSize(600, 400);
         landingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,13 +21,24 @@ public class MainApp {
 
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu fileMenu = new JMenu("Datei");
+        JMenu fileMenu = new JMenu("Exit");
         JMenuItem exitItem = new JMenuItem("Beenden");
+        JMenuItem logout = new JMenuItem("LogOut");
+
+        logout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                landingFrame.dispose();
+                showLoginScreen();
+            }
+        });
+
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
+
+        fileMenu.add(logout);
         fileMenu.add(exitItem);
 
         JMenu trainingMenu = new JMenu("Trainingsplan");
@@ -34,6 +51,29 @@ public class MainApp {
         JMenuItem userSettingsItem = new JMenuItem("Benutzereinstellungen");
         settingsMenu.add(userSettingsItem);
 
+        JMenuItem toggleDarkModeItem = new JMenuItem("Dark Mode aktivieren");
+        toggleDarkModeItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                darkmode = !darkmode;
+                updateUI(landingFrame);
+                toggleDarkModeItem.setText(darkmode ? "Dark Mode deaktivieren" : "Dark Mode aktivieren");
+            }
+        });
+        settingsMenu.add(toggleDarkModeItem);
+
+        if (isAdmin) {
+            JMenu adminMenu = new JMenu("Admin");
+            JMenuItem adminPanelItem = new JMenuItem("Admin-Control-Panel");
+            adminPanelItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(landingFrame, "Admin-Control-Panel geöffnet!");
+                    new AdminControlPanel();
+                }
+            });
+            adminMenu.add(adminPanelItem);
+            menuBar.add(adminMenu);
+        }
+
         menuBar.add(fileMenu);
         menuBar.add(trainingMenu);
         menuBar.add(settingsMenu);
@@ -42,7 +82,7 @@ public class MainApp {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        JLabel welcomeLabel = new JLabel("Willkommen in der TrainingsApp!", SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("Willkommen in der TrainingsApp, " + username + "!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         mainPanel.add(welcomeLabel, BorderLayout.CENTER);
 
@@ -83,7 +123,28 @@ public class MainApp {
         landingFrame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new MainApp();
+    private void updateUI(JFrame frame) {
+        if (darkmode) {
+            frame.getContentPane().setBackground(Color.BLACK);
+            for (Component comp : frame.getContentPane().getComponents()) {
+                comp.setForeground(Color.WHITE);
+                if (comp instanceof JPanel) {
+                    comp.setBackground(Color.BLACK);
+                }
+            }
+        } else {
+            frame.getContentPane().setBackground(Color.WHITE);
+            for (Component comp : frame.getContentPane().getComponents()) {
+                comp.setForeground(Color.BLACK);
+                if (comp instanceof JPanel) {
+                    comp.setBackground(Color.WHITE);
+                }
+            }
+        }
+        frame.revalidate();
+        frame.repaint();
+    }
+    private void showLoginScreen() {
+        new LandingPage();
     }
 }

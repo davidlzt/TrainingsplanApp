@@ -51,6 +51,7 @@ public class UserRegistration {
         frame.add(panel);
         frame.setVisible(true);
     }
+
     // Seite 1: Benutzername und E-Mail
     private JPanel createPage1() {
         JPanel page = new JPanel(new GridBagLayout());
@@ -250,17 +251,18 @@ public class UserRegistration {
                 try {
                     groesse = Double.parseDouble(groesseField.getText());
                     geschlecht = (String) geschlechtBox.getSelectedItem();
+                    String role = "user";
 
                     if (groesse <= 0) {
                         JOptionPane.showMessageDialog(frame, "Bitte eine gültige Größe eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        // Benutzer in die Datenbank einfügen
                         DatabaseHandler dbHandler = new DatabaseHandler();
-                        dbHandler.insertUser(username, email, password, gewicht, age, groesse, geschlecht);
+                        dbHandler.insertUser(username, email, password, gewicht, age, groesse, geschlecht, role);
 
                         JOptionPane.showMessageDialog(frame, "Registrierung erfolgreich!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
-                        frame.dispose(); // Fenster schließen
-                        new MainApp(); // Zur Hauptanwendung wechseln
+                        frame.dispose();
+
+                        new MainApp(username, false);
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Bitte eine gültige Zahl für die Größe eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);

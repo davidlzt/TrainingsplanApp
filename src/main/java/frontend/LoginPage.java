@@ -1,5 +1,6 @@
 package frontend;
 
+import database.DatabaseHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -47,12 +48,16 @@ public class LoginPage {
                 String username = userField.getText();
                 String password = new String(passwordField.getPassword());
 
-                if (username.equals("admin") && password.equals("admin")) {
+                DatabaseHandler dbHandler = new DatabaseHandler();
+                boolean isValidUser = dbHandler.validateUser(username, password);
+                boolean isAdmin = dbHandler.isAdmin(username);
+
+                if (isValidUser) {
                     JOptionPane.showMessageDialog(loginFrame, "Erfolgreich eingeloggt!", "Login", JOptionPane.INFORMATION_MESSAGE);
                     loginFrame.dispose();
-                    new MainApp();
+                    new MainApp(username, isAdmin);
                 } else {
-                    JOptionPane.showMessageDialog(loginFrame, "Falsche Anmeldedaten.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(loginFrame, "Benutzername oder Passwort falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
