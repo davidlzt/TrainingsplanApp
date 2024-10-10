@@ -1,6 +1,6 @@
 package frontend;
 
-import database.DatabaseHandler; // Importiere die DatabaseHandler-Klasse
+import backend.database.DatabaseHandler; // Importiere die DatabaseHandler-Klasse
 
 import javax.swing.*;
 import java.awt.*;
@@ -262,7 +262,7 @@ public class UserRegistration {
                         JOptionPane.showMessageDialog(frame, "Registrierung erfolgreich!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
                         frame.dispose();
 
-                        new MainApp(username, false);
+                        new MainApp(username, false); // Standardmäßig kein Admin
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Bitte eine gültige Zahl für die Größe eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);

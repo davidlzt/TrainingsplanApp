@@ -1,6 +1,6 @@
 package frontend;
 
-import database.DatabaseHandler;
+import backend.database.DatabaseHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

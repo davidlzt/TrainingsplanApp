@@ -1,7 +1,7 @@
 package frontend;
 
-import database.DatabaseHandler;
-import database.User;
+import backend.database.DatabaseHandler;
+import backend.models.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

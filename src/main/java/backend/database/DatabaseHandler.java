@@ -1,4 +1,6 @@
-package database;
+package backend.database;
+
+import backend.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class DatabaseHandler {
     private static Connection connect() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connected to the database!");
+            System.out.println("Connected to the backend.database!");
         }
         return connection;
     }
@@ -23,7 +25,7 @@ public class DatabaseHandler {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Disconnected from the database!");
+                System.out.println("Disconnected from the backend.database!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
