@@ -40,10 +40,19 @@ public class AdminControlPanel {
 
         JButton addExerciseButton = new JButton("Übung hinzufügen");
         buttonPanel.add(addExerciseButton);
+        JButton addDeviceButton = new JButton("Gerät hinzufügen");
+        buttonPanel.add(addDeviceButton);
+
+        addDeviceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddDeviceWindow();
+            }
+        });
         addExerciseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddExerciseWindow(); // Fenster zum Hinzufügen einer Übung öffnen
+                new AddExerciseWindow();
             }
         });
 
