@@ -80,10 +80,12 @@ public class HomePage {
 
         landingFrame.setJMenuBar(menuBar);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(darkmode ? Color.BLACK : Color.WHITE);
+
         JLabel welcomeLabel = new JLabel("Willkommen in der TrainingsApp, " + username + "!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        welcomeLabel.setForeground(darkmode ? Color.WHITE : Color.BLACK);
         mainPanel.add(welcomeLabel, BorderLayout.CENTER);
 
         viewPlanItem.addActionListener(new ActionListener() {
@@ -91,6 +93,7 @@ public class HomePage {
                 mainPanel.removeAll();
                 JLabel planLabel = new JLabel("Dein Trainingsplan:", SwingConstants.CENTER);
                 planLabel.setFont(new Font("Arial", Font.BOLD, 16));
+                planLabel.setForeground(darkmode ? Color.WHITE : Color.BLACK);
                 mainPanel.add(planLabel, BorderLayout.CENTER);
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -102,6 +105,7 @@ public class HomePage {
                 mainPanel.removeAll();
                 JLabel createLabel = new JLabel("Erstelle einen neuen Trainingsplan:", SwingConstants.CENTER);
                 createLabel.setFont(new Font("Arial", Font.BOLD, 16));
+                createLabel.setForeground(darkmode ? Color.WHITE : Color.BLACK);
                 mainPanel.add(createLabel, BorderLayout.CENTER);
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -113,6 +117,7 @@ public class HomePage {
                 mainPanel.removeAll();
                 JLabel settingsLabel = new JLabel("Benutzereinstellungen", SwingConstants.CENTER);
                 settingsLabel.setFont(new Font("Arial", Font.BOLD, 16));
+                settingsLabel.setForeground(darkmode ? Color.WHITE : Color.BLACK);
                 mainPanel.add(settingsLabel, BorderLayout.CENTER);
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -131,6 +136,9 @@ public class HomePage {
                 if (comp instanceof JPanel) {
                     comp.setBackground(Color.BLACK);
                 }
+                if (comp instanceof JMenuBar) {
+                    comp.setForeground(Color.WHITE);
+                }
             }
         } else {
             frame.getContentPane().setBackground(Color.WHITE);
@@ -139,11 +147,15 @@ public class HomePage {
                 if (comp instanceof JPanel) {
                     comp.setBackground(Color.WHITE);
                 }
+                if (comp instanceof JMenuBar) {
+                    comp.setForeground(Color.BLACK);
+                }
             }
         }
         frame.revalidate();
         frame.repaint();
     }
+
     private void showLoginScreen() {
         new LandingPage(new Dimension(800, 600));
     }

@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegistrationPage {
 
@@ -39,17 +41,22 @@ public class RegistrationPage {
         panel = new JPanel(cardLayout);
 
         JPanel page1 = createPage1();
+        page1.setBackground(Color.DARK_GRAY);
         JPanel page2 = createPage2();
+        page2.setBackground(Color.DARK_GRAY);
         JPanel page3 = createPage3();
+        page3.setBackground(Color.DARK_GRAY);
         JPanel page4 = createPage4();
+        page4.setBackground(Color.DARK_GRAY);
 
         panel.add(page1, "Page1");
         panel.add(page2, "Page2");
         panel.add(page3, "Page3");
         panel.add(page4, "Page4");
 
-        backButton.setEnabled(false);
+        backButton.setVisible(false);
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(Color.DARK_GRAY);
         topPanel.add(backButton);
         frame.add(topPanel, BorderLayout.NORTH);
 
@@ -65,12 +72,19 @@ public class RegistrationPage {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel usernameLabel = new JLabel("Benutzername:");
+        styleLabel(usernameLabel);
         usernameField = new JTextField(20);
+        usernameField.setBackground(Color.WHITE);
+        usernameField.setForeground(Color.DARK_GRAY);
 
         JLabel emailLabel = new JLabel("E-Mail:");
+        styleLabel(emailLabel);
         emailField = new JTextField(20);
+        emailField.setBackground(Color.WHITE);
+        emailField.setForeground(Color.DARK_GRAY);
 
         JButton nextButton = new JButton("Weiter");
+        styleButton(nextButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -102,6 +116,8 @@ public class RegistrationPage {
                 } else {
                     cardLayout.show(panel, "Page2");
                     backButton.setEnabled(true);
+                    backButton.setVisible(true);
+                    styleButton(backButton);
                     setBackButtonAction("Page1");
                 }
             }
@@ -117,12 +133,19 @@ public class RegistrationPage {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel passwordLabel = new JLabel("Passwort:");
+        styleLabel(passwordLabel);
         passwordField = new JPasswordField(20);
+        passwordField.setBackground(Color.WHITE);
+        passwordField.setForeground(Color.DARK_GRAY);
 
         JLabel confirmPasswordLabel = new JLabel("Passwort bestätigen:");
+        styleLabel(confirmPasswordLabel);
         confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField.setBackground(Color.WHITE);
+        confirmPasswordField.setForeground(Color.DARK_GRAY);
 
         JButton nextButton = new JButton("Weiter");
+        styleButton(nextButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -172,12 +195,19 @@ public class RegistrationPage {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel gewichtLabel = new JLabel("Gewicht (kg):");
+        styleLabel(gewichtLabel);
         gewichtField = new JTextField(20);
+        gewichtField.setBackground(Color.WHITE);
+        gewichtField.setForeground(Color.DARK_GRAY);
 
         JLabel ageLabel = new JLabel("Alter:");
+        styleLabel(ageLabel);
         ageField = new JTextField(20);
+        ageField.setBackground(Color.WHITE);
+        ageField.setForeground(Color.DARK_GRAY);
 
         JButton nextButton = new JButton("Weiter");
+        styleButton(nextButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -229,13 +259,18 @@ public class RegistrationPage {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel groesseLabel = new JLabel("Größe (cm):");
+        styleLabel(groesseLabel);
         groesseField = new JTextField(20);
+        groesseField.setBackground(Color.WHITE);
+        groesseField.setForeground(Color.DARK_GRAY);
 
         JLabel geschlechtLabel = new JLabel("Geschlecht:");
+        styleLabel(geschlechtLabel);
         String[] geschlechter = {"Männlich", "Weiblich", "Andere"};
         geschlechtBox = new JComboBox<>(geschlechter);
 
         JButton submitButton = new JButton("Registrieren");
+        styleButton(submitButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -270,10 +305,38 @@ public class RegistrationPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panel, previousPage);
-                if (previousPage.equals("Page1")) {
-                    backButton.setEnabled(false);
-                }
             }
         });
+
+        styleButton(backButton);
+        backButton.setVisible(true);
+    }
+
+
+    private void styleButton(JButton button) {
+        button.setBackground(Color.WHITE);
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Color.LIGHT_GRAY);
+                button.setForeground(Color.WHITE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(Color.WHITE);
+                button.setForeground(Color.BLACK);
+            }
+        });
+    }
+
+    private void styleLabel(JLabel label) {
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 }

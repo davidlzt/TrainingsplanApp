@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LoginPage {
     public LoginPage(Dimension dimension) {
@@ -13,22 +15,34 @@ public class LoginPage {
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setLayout(new BorderLayout());
+        loginFrame.setBackground(Color.DARK_GRAY);
 
-        // Zurück-Button oben links
         JButton backButton = new JButton("← Zurück");
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(backButton);
+        styleButton(backButton);
+        topPanel.setBackground(Color.DARK_GRAY);
         loginFrame.add(topPanel, BorderLayout.NORTH);
 
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(Color.DARK_GRAY);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
         JLabel userLabel = new JLabel("Benutzername:");
+        styleLabel(userLabel);
         JTextField userField = new JTextField(15);
+        userField.setBackground(Color.WHITE);
+        userField.setForeground(Color.DARK_GRAY);
+
         JLabel passwordLabel = new JLabel("Passwort:");
+        styleLabel(passwordLabel);
         JPasswordField passwordField = new JPasswordField(15);
+        passwordField.setBackground(Color.WHITE);
+        passwordField.setForeground(Color.DARK_GRAY);
+
         JButton loginButton = new JButton("Einloggen");
+        styleButton(loginButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -69,16 +83,41 @@ public class LoginPage {
             }
         });
 
-        // ActionListener für den Zurück-Button
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loginFrame.dispose();
-                new LandingPage(new Dimension(800, 600)); // Gehe zurück zur LandingPage
+                new LandingPage(new Dimension(800, 600));
             }
         });
 
         loginFrame.add(panel, BorderLayout.CENTER);
         loginFrame.setVisible(true);
+    }
+
+    private void styleButton(JButton button) {
+        button.setBackground(Color.WHITE);
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Color.LIGHT_GRAY);
+                button.setForeground(Color.WHITE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(Color.WHITE);
+                button.setForeground(Color.BLACK);
+            }
+        });
+    }
+    private void styleLabel(JLabel label) {
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 }
