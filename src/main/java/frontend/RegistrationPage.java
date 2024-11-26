@@ -1,13 +1,13 @@
 package frontend;
 
-import backend.database.DatabaseHandler; // Importiere die DatabaseHandler-Klasse
+import backend.database.DatabaseHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserRegistration {
+public class RegistrationPage {
 
     private JFrame frame;
     private JPanel panel;
@@ -18,29 +18,29 @@ public class UserRegistration {
     private JTextField gewichtField, ageField;
     private JTextField groesseField;
     private JComboBox<String> geschlechtBox;
+    private JButton backButton = new JButton("← Zurück");
 
     private String username, email, password, confirmPassword;
     private double gewicht, groesse;
     private int age;
     private String geschlecht;
 
-    public UserRegistration() {
+    public RegistrationPage(Dimension dimension) {
         DatabaseHandler dbHandler = new DatabaseHandler();
-        dbHandler.createTable(); // Tabelle erstellen
+        dbHandler.createTable();
 
         frame = new JFrame("Benutzerregistrierung");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null); // Fenster zentrieren
+        frame.setSize(dimension);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new BorderLayout());
 
         cardLayout = new CardLayout();
         panel = new JPanel(cardLayout);
 
         JPanel page1 = createPage1();
-        // Schritt 2: Passwort und Passwort-Bestätigung
         JPanel page2 = createPage2();
         JPanel page3 = createPage3();
-        // Schritt 4: Größe und Geschlecht
         JPanel page4 = createPage4();
 
         panel.add(page1, "Page1");
@@ -48,11 +48,16 @@ public class UserRegistration {
         panel.add(page3, "Page3");
         panel.add(page4, "Page4");
 
-        frame.add(panel);
+        backButton.setEnabled(false);
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.add(backButton);
+        frame.add(topPanel, BorderLayout.NORTH);
+
+        frame.add(panel, BorderLayout.CENTER);
+
         frame.setVisible(true);
     }
 
-    // Seite 1: Benutzername und E-Mail
     private JPanel createPage1() {
         JPanel page = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -96,6 +101,8 @@ public class UserRegistration {
                     JOptionPane.showMessageDialog(frame, "Bitte Benutzername und E-Mail ausfüllen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } else {
                     cardLayout.show(panel, "Page2");
+                    backButton.setEnabled(true);
+                    setBackButtonAction("Page1");
                 }
             }
         });
@@ -103,7 +110,6 @@ public class UserRegistration {
         return page;
     }
 
-    // Seite 2: Passwort und Passwort-Bestätigung
     private JPanel createPage2() {
         JPanel page = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -149,9 +155,12 @@ public class UserRegistration {
                     JOptionPane.showMessageDialog(frame, "Passwörter stimmen nicht überein.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } else {
                     cardLayout.show(panel, "Page3");
+                    setBackButtonAction("Page2");
                 }
             }
         });
+
+        setBackButtonAction("Page1");
 
         return page;
     }
@@ -200,6 +209,7 @@ public class UserRegistration {
                         JOptionPane.showMessageDialog(frame, "Bitte gültige Werte für Gewicht und Alter eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     } else {
                         cardLayout.show(panel, "Page4");
+                        setBackButtonAction("Page3");
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Bitte gültige Zahlen für Gewicht und Alter eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -207,10 +217,11 @@ public class UserRegistration {
             }
         });
 
+        setBackButtonAction("Page2");
+
         return page;
     }
 
-    // Seite 4: Größe und Geschlecht
     private JPanel createPage4() {
         JPanel page = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -245,31 +256,24 @@ public class UserRegistration {
         gbc.anchor = GridBagConstraints.CENTER;
         page.add(submitButton, gbc);
 
-        submitButton.addActionListener(new ActionListener() {
+        setBackButtonAction("Page3");
+
+        return page;
+    }
+
+    private void setBackButtonAction(String previousPage) {
+        for (ActionListener al : backButton.getActionListeners()) {
+            backButton.removeActionListener(al);
+        }
+
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    groesse = Double.parseDouble(groesseField.getText());
-                    geschlecht = (String) geschlechtBox.getSelectedItem();
-                    String role = "user";
-
-                    if (groesse <= 0) {
-                        JOptionPane.showMessageDialog(frame, "Bitte eine gültige Größe eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        DatabaseHandler dbHandler = new DatabaseHandler();
-                        dbHandler.insertUser(username, email, password, gewicht, age, groesse, geschlecht, role);
-
-                        JOptionPane.showMessageDialog(frame, "Registrierung erfolgreich!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
-                        frame.dispose();
-
-                        new MainApp(username, false); // Standardmäßig kein Admin
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Bitte eine gültige Zahl für die Größe eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                cardLayout.show(panel, previousPage);
+                if (previousPage.equals("Page1")) {
+                    backButton.setEnabled(false);
                 }
             }
         });
-
-        return page;
     }
 }

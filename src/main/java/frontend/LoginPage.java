@@ -7,11 +7,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPage {
-    public LoginPage() {
+    public LoginPage(Dimension dimension) {
         JFrame loginFrame = new JFrame("Einloggen");
-        loginFrame.setSize(400, 200);
+        loginFrame.setSize(dimension);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null);
+        loginFrame.setLayout(new BorderLayout());
+
+        // Zurück-Button oben links
+        JButton backButton = new JButton("← Zurück");
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.add(backButton);
+        loginFrame.add(topPanel, BorderLayout.NORTH);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -55,14 +62,23 @@ public class LoginPage {
                 if (isValidUser) {
                     JOptionPane.showMessageDialog(loginFrame, "Erfolgreich eingeloggt!", "Login", JOptionPane.INFORMATION_MESSAGE);
                     loginFrame.dispose();
-                    new MainApp(username, isAdmin);
+                    new HomePage(username, isAdmin);
                 } else {
                     JOptionPane.showMessageDialog(loginFrame, "Benutzername oder Passwort falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        loginFrame.add(panel);
+        // ActionListener für den Zurück-Button
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loginFrame.dispose();
+                new LandingPage(new Dimension(800, 600)); // Gehe zurück zur LandingPage
+            }
+        });
+
+        loginFrame.add(panel, BorderLayout.CENTER);
         loginFrame.setVisible(true);
     }
 }

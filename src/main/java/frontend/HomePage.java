@@ -5,12 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainApp {
+public class HomePage {
     private String username;
     private boolean isAdmin;
     private boolean darkmode = false;
 
-    public MainApp(String username, boolean isAdmin) {
+    public HomePage(String username, boolean isAdmin) {
         this.username = username;
         this.isAdmin = isAdmin;
 
@@ -145,6 +145,6 @@ public class MainApp {
         frame.repaint();
     }
     private void showLoginScreen() {
-        new LandingPage();
+        new LandingPage(new Dimension(800, 600));
     }
 }

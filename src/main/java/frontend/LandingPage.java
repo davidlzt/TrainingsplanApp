@@ -5,10 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LandingPage {
-    public LandingPage() {
+public class LandingPage extends JFrame{
+
+    public LandingPage(Dimension dimension) {
         JFrame startFrame = new JFrame("Willkommen zur TrainingsApp");
-        startFrame.setSize(400, 200);
+        startFrame.setSize(dimension);
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startFrame.setLocationRelativeTo(null);
 
@@ -30,7 +31,7 @@ public class LandingPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startFrame.dispose();
-                new LoginPage();
+                new LoginPage(new Dimension(800, 600));
             }
         });
 
@@ -38,15 +39,10 @@ public class LandingPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startFrame.dispose();
-                new UserRegistration();
+                new RegistrationPage(new Dimension(800, 600));
             }
         });
-
         startFrame.add(panel);
         startFrame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new LandingPage();
     }
 }
