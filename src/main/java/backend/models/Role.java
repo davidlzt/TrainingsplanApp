@@ -3,7 +3,8 @@ package backend.models;
 public enum Role {
     ADMIN("admin"),
     USER("user"),
-    MODERATOR("moderator");
+    MODERATOR("moderator"),
+    VIP("vip");
 
     private String rolename;
 

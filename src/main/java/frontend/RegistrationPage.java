@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.database.DatabaseHandler;
+import backend.database.DatabaseSetup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +28,8 @@ public class RegistrationPage {
     private String geschlecht;
 
     public RegistrationPage(Dimension dimension) {
-        DatabaseHandler dbHandler = new DatabaseHandler();
-        dbHandler.createTable();
+        DatabaseSetup dbSetup = new DatabaseSetup();
+        dbSetup.createTables();
 
         frame = new JFrame("Benutzerregistrierung");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

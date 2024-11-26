@@ -1,19 +1,23 @@
 package backend.models;
 
-public class Exercises {
+import java.util.List;
+
+public class Exercise {
 
     private String name;
     private String difficulty;
     private String image;
-    private String targetMuscle;
+    private List<Muscle> targetMuscles;
     private String description;
+    private List<Device> devices;
 
-    public Exercises(String name, String difficulty, String image, String targetMuscle, String description) {
+    public Exercise(String name, String difficulty, String image, List<Muscle> targetMuscles, String description, List<Device> devices) {
         this.name = name;
         this.difficulty = difficulty;
         this.image = image;
-        this.targetMuscle = targetMuscle;
+        this.targetMuscles = targetMuscles;
         this.description = description;
+        this.devices = devices;
     }
 
     public String getName() {
@@ -40,12 +44,12 @@ public class Exercises {
         this.image = image;
     }
 
-    public String getTargetMuscle() {
-        return targetMuscle;
+    public List<Muscle> getTargetMuscles() {
+        return targetMuscles;
     }
 
-    public void setTargetMuscle(String targetMuscle) {
-        this.targetMuscle = targetMuscle;
+    public void setTargetMuscles(List<Muscle> targetMuscles) {
+        this.targetMuscles = targetMuscles;
     }
 
     public String getDescription() {
@@ -56,14 +60,23 @@ public class Exercises {
         this.description = description;
     }
 
+    public List<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<Device> devices) {
+        this.devices = devices;
+    }
+
     @Override
     public String toString() {
-        return "Exercises{" +
+        return "Exercise{" +
                 "name='" + name + '\'' +
                 ", difficulty='" + difficulty + '\'' +
                 ", image='" + image + '\'' +
-                ", targetMuscle='" + targetMuscle + '\'' +
+                ", targetMuscles=" + targetMuscles +
                 ", description='" + description + '\'' +
+                ", devices=" + devices +
                 '}';
     }
 }

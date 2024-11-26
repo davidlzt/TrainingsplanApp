@@ -3,60 +3,12 @@ package backend.database;
 import backend.models.User;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
-public class DatabaseHandler {
-    private static final String URL = "jdbc:mysql://localhost:3306/project";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
-    private static Connection connection;
+import static backend.database.DatabaseConnection.connect;
 
-    private static Connection connect() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connected to the backend.database!");
-        }
-        return connection;
-    }
-
-    public static void disconnect() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Disconnected from the backend.database!");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS users ("
-                + "id INT AUTO_INCREMENT PRIMARY KEY, "
-                + "username VARCHAR(255), "
-                + "email VARCHAR(255), "
-                + "password VARCHAR(255), "
-                + "gewicht DOUBLE, "
-                + "age INT, "
-                + "groesse DOUBLE, "
-                + "geschlecht VARCHAR(10), "
-                + "role VARCHAR(32))";
-
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
-            System.out.println("Tabelle erstellt oder bereits vorhanden.");
-        } catch (SQLException e) {
-            System.out.println("Fehler beim Erstellen der Tabelle: " + e.getMessage());
-        }
-    }
-
-    private boolean isValidRole(String role) {
-        List<String> validRoles = Arrays.asList("admin", "moderator", "user", "vip");
-        return validRoles.contains(role);
-    }
+public class UserHandler {
 
     public void insertUser(String username, String email, String password, double gewicht, int age, double groesse, String geschlecht, String role) {
         if (!isValidRole(role)) {
@@ -81,6 +33,11 @@ public class DatabaseHandler {
         } catch (SQLException e) {
             System.out.println("Fehler beim Einfügen des Users: " + e.getMessage());
         }
+    }
+
+    private boolean isValidRole(String role) {
+        List<String> validRoles = List.of("admin", "moderator", "user", "vip");
+        return validRoles.contains(role);
     }
 
     public boolean validateUser(String username, String password) {

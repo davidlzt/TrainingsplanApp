@@ -1,6 +1,7 @@
 package frontend;
 
-import backend.database.DatabaseHandler;
+import backend.database.UserHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -69,9 +70,9 @@ public class LoginPage {
                 String username = userField.getText();
                 String password = new String(passwordField.getPassword());
 
-                DatabaseHandler dbHandler = new DatabaseHandler();
-                boolean isValidUser = dbHandler.validateUser(username, password);
-                boolean isAdmin = dbHandler.isAdmin(username);
+                UserHandler userHandler = new UserHandler();
+                boolean isValidUser = userHandler.validateUser(username, password);
+                boolean isAdmin = userHandler.isAdmin(username);
 
                 if (isValidUser) {
                     JOptionPane.showMessageDialog(loginFrame, "Erfolgreich eingeloggt!", "Login", JOptionPane.INFORMATION_MESSAGE);

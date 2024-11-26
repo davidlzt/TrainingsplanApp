@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.database.DatabaseHandler;
+import backend.database.UserHandler;
 import backend.models.User;
 
 import javax.swing.*;
@@ -12,12 +12,12 @@ import java.util.List;
 
 public class AdminControlPanel {
     private JFrame frame;
-    private DatabaseHandler dbHandler;
+    private UserHandler userHandler;
     private JTable userTable;
     private DefaultTableModel tableModel;
 
     public AdminControlPanel() {
-        dbHandler = new DatabaseHandler();
+        userHandler = new UserHandler();
         frame = new JFrame("Admin Control Panel");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -37,6 +37,15 @@ public class AdminControlPanel {
         buttonPanel.add(refreshButton);
         buttonPanel.add(updateRoleButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton addExerciseButton = new JButton("Übung hinzufügen");
+        buttonPanel.add(addExerciseButton);
+        addExerciseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddExerciseWindow(); // Fenster zum Hinzufügen einer Übung öffnen
+            }
+        });
 
         refreshButton.addActionListener(new ActionListener() {
             @Override
@@ -59,7 +68,7 @@ public class AdminControlPanel {
 
     private void loadUsers() {
         tableModel.setRowCount(0);
-        List<User> users = dbHandler.getAllUsers();
+        List<User> users = userHandler.getAllUsers();
         for (User user : users) {
             tableModel.addRow(new Object[]{user.getId(), user.getUsername(), user.getEmail(), user.getRole()});
         }
@@ -84,11 +93,12 @@ public class AdminControlPanel {
             );
 
             if (newRole != null && !newRole.equals(currentRole)) {
-                dbHandler.updateUserRole(userName, userId, newRole);
+                userHandler.updateUserRole(userName, userId, newRole);
                 loadUsers();
             }
         } else {
             JOptionPane.showMessageDialog(frame, "Bitte wähle einen Nutzer aus.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }
